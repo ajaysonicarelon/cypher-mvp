@@ -356,8 +356,12 @@
             const message = userInput.value.trim();
             
             if (!message) {
+                console.log('❌ Empty message, not sending');
                 return;
             }
+            
+            console.log('📤 Sending message:', message);
+            console.log('🎯 API Endpoint:', API_ENDPOINT);
             
             addMessage(message, true);
             userInput.value = '';
@@ -367,6 +371,7 @@
             addTypingIndicator();
             
             try {
+                console.log('🔄 Making fetch request...');
                 const response = await fetch(API_ENDPOINT, {
                     method: 'POST',
                     headers: {
@@ -375,6 +380,7 @@
                     body: JSON.stringify({ message: message })
                 });
                 
+                console.log('📥 Response received:', response.status, response.statusText);
                 removeTypingIndicator();
                 
                 if (!response.ok) {
@@ -382,6 +388,7 @@
                 }
                 
                 const data = await response.json();
+                console.log('✅ Data received:', data);
                 
                 addMessage(
                     data.reply, 
@@ -390,10 +397,13 @@
                     data.confidence
                 );
                 
+                console.log('✅ Message added to chat');
+                
             } catch (error) {
                 removeTypingIndicator();
-                console.error('Error:', error);
-                showError('Failed to connect to the server. Please make sure the backend is running on http://localhost:8000');
+                console.error('❌ Error occurred:', error);
+                console.error('❌ Error details:', error.message);
+                showError('Failed to connect to the server. Please check console for details.');
             } finally {
                 sendButton.disabled = false;
                 userInput.disabled = false;
