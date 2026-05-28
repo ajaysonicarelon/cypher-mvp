@@ -2,12 +2,18 @@
   "version": 2,
   "rewrites": [
     {
-      "source": "/api/chat",
-      "destination": "/api/chat.py"
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/public/index.html"
     },
     {
-      "source": "/api/health",
-      "destination": "/api/health.py"
+      "src": "/(.*)",
+      "dest": "/public/$1"
     }
   ]
 }

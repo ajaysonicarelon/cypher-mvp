@@ -3,7 +3,7 @@ Flask API for Vercel Deployment
 Handles chat and health endpoints
 """
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import os
 import numpy as np
@@ -157,14 +157,19 @@ def health():
 
 @app.route('/')
 def index():
-    """Root endpoint"""
-    return jsonify({
-        'message': 'AI Chatbot API',
-        'endpoints': {
-            'chat': '/api/chat (POST)',
-            'health': '/api/health (GET)'
-        }
-    })
+    """Serve the frontend"""
+    try:
+        # Try to serve from public directory
+        return send_from_directory('../public', 'index.html')
+    except:
+        # Fallback to API info
+        return jsonify({
+            'message': 'AI Chatbot API',
+            'endpoints': {
+                'chat': '/api/chat (POST)',
+                'health': '/api/health (GET)'
+            }
+        })
 
 # For Vercel
 if __name__ == '__main__':
