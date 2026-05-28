@@ -1,0 +1,3 @@
+[tool.vercel]
+# Tell Vercel these are NOT FastAPI apps, they are serverless functions
+python-version = "3.9"
