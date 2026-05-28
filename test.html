@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Connection Test</title>
+</head>
+<body>
+    <h1>Testing Connection</h1>
+    <button onclick="testConnection()">Test API</button>
+    <pre id="result"></pre>
+
+    <script>
+        async function testConnection() {
+            const result = document.getElementById('result');
+            result.textContent = 'Testing...';
+            
+            try {
+                console.log('Attempting to connect to http://localhost:8000/chat');
+                
+                const response = await fetch('http://localhost:8000/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: 'test' })
+                });
+                
+                console.log('Response status:', response.status);
+                const data = await response.json();
+                console.log('Response data:', data);
+                
+                result.textContent = 'SUCCESS!\n\n' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error('Error:', error);
+                result.textContent = 'ERROR: ' + error.message + '\n\nCheck browser console for details';
+            }
+        }
+        
+        // Auto-test on load
+        window.onload = testConnection;
+    </script>
+</body>
+</html>

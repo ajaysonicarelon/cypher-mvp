@@ -1,0 +1,43 @@
+# Ignore local development files
+.env
+.env.local
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Ignore old files
+main.py
+main_simple.py
+main_supabase.py
+index.html
+
+# Ignore database files
+database/
+
+# Ignore documentation
+docs/
+
+# Ignore git
+.git/
+.gitignore
+
+# Ignore IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore logs
+*.log
+logs/
+
+# Ignore test files
+test_*.py
+*_test.py
