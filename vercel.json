@@ -1,36 +1,16 @@
 {
   "version": 2,
   "name": "ai-chatbot",
-  "builds": [
+  "rewrites": [
     {
-      "src": "api/**/*.py",
-      "use": "@vercel/python"
+      "source": "/api/chat",
+      "destination": "/api/chat.py"
     },
     {
-      "src": "public/**",
-      "use": "@vercel/static"
+      "source": "/api/health",
+      "destination": "/api/health.py"
     }
   ],
-  "routes": [
-    {
-      "src": "/api/chat",
-      "dest": "/api/chat.py"
-    },
-    {
-      "src": "/api/health",
-      "dest": "/api/health.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/$1"
-    }
-  ],
-  "env": {
-    "SUPABASE_URL": "@supabase_url",
-    "SUPABASE_KEY": "@supabase_key",
-    "CONFIDENCE_THRESHOLD": "0.40"
-  },
-  "regions": ["iad1"],
   "functions": {
     "api/**/*.py": {
       "memory": 1024,
