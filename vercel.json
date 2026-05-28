@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "ai-chatbot",
   "rewrites": [
     {
       "source": "/api/chat",
@@ -10,11 +9,5 @@
       "source": "/api/health",
       "destination": "/api/health.py"
     }
-  ],
-  "functions": {
-    "api/**/*.py": {
-      "memory": 1024,
-      "maxDuration": 10
-    }
-  }
+  ]
 }

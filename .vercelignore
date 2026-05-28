@@ -1,43 +1,26 @@
-# Ignore local development files
+# Local environment
 .env
 .env.local
+
+# Python cache
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
-.Python
-*.so
-*.egg
-*.egg-info/
-dist/
-build/
 
-# Ignore old files
+# Old development files (not needed for deployment)
 main.py
 main_simple.py
 main_supabase.py
-index.html
+test.html
 
-# Ignore database files
+# Database scripts (not needed for deployment)
 database/
 
-# Ignore documentation
+# Documentation (not needed for deployment)
 docs/
 
-# Ignore git
-.git/
-.gitignore
-
-# Ignore IDE
+# IDE
 .vscode/
 .idea/
-*.swp
-*.swo
 
-# Ignore logs
-*.log
-logs/
-
-# Ignore test files
-test_*.py
-*_test.py
+# Git
+.git/
