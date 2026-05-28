@@ -31,7 +31,12 @@ def get_supabase():
         key = os.environ.get('SUPABASE_KEY')
         if not url or not key:
             raise Exception('SUPABASE_URL and SUPABASE_KEY must be set')
-        _supabase = create_client(url, key)
+        try:
+            _supabase = create_client(url, key)
+        except TypeError:
+            # Fallback for older supabase-py versions
+            from supabase import Client
+            _supabase = Client(url, key)
     return _supabase
 
 def initialize_system():
