@@ -3,15 +3,25 @@ Vercel Serverless Function: Health Check Endpoint
 Returns system status and configuration
 """
 
-from http.server import BaseHTTPRequestHandler
 import json
 import os
 
-class handler(BaseHTTPRequestHandler):
-    """Vercel serverless function handler"""
+def handler(request):
+    """Vercel serverless function handler - Modern format"""
     
-    def do_GET(self):
-        """Handle GET requests"""
+    # Handle CORS preflight
+    if request.method == 'OPTIONS':
+        return {
+            'statusCode': 200,
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
+            }
+        }
+    
+    # Handle GET
+    if request.method == 'GET':
         try:
             # Check environment variables
             supabase_url = os.environ.get('SUPABASE_URL', '')
@@ -32,27 +42,35 @@ class handler(BaseHTTPRequestHandler):
                 'version': '2.0.0'
             }
             
-            # Send response
-            self.send_response(200)
-            self.send_header('Content-Type', 'application/json')
-            self.send_header('Access-Control-Allow-Origin', '*')
-            self.end_headers()
-            self.wfile.write(json.dumps(response, indent=2).encode())
+            # Return response
+            return {
+                'statusCode': 200,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                'body': json.dumps(response, indent=2)
+            }
             
         except Exception as e:
-            self.send_response(500)
-            self.send_header('Content-Type', 'application/json')
-            self.send_header('Access-Control-Allow-Origin', '*')
-            self.end_headers()
-            self.wfile.write(json.dumps({
-                'status': 'error',
-                'error': str(e)
-            }).encode())
+            return {
+                'statusCode': 500,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                'body': json.dumps({
+                    'status': 'error',
+                    'error': str(e)
+                })
+            }
     
-    def do_OPTIONS(self):
-        """Handle OPTIONS requests (CORS preflight)"""
-        self.send_response(200)
-        self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS')
-        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
-        self.end_headers()
+    # Method not allowed
+    return {
+        'statusCode': 405,
+        'headers': {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        'body': json.dumps({'error': 'Method not allowed'})
+    }

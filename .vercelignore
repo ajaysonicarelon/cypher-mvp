@@ -11,12 +11,16 @@ main.py
 main_simple.py
 main_supabase.py
 test.html
+index.html
 
 # Database scripts (not needed for deployment)
 database/
 
 # Documentation (not needed for deployment)
 docs/
+README.md
+README_VERCEL.md
+QUICKSTART.md
 
 # IDE
 .vscode/

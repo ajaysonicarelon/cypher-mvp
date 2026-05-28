@@ -3,7 +3,6 @@ Vercel Serverless Function: Chat Endpoint
 Handles chat requests with Supabase knowledge base
 """
 
-from http.server import BaseHTTPRequestHandler
 import json
 import os
 import numpy as np
@@ -113,53 +112,68 @@ def process_chat(message: str):
         'media_url': matched_item.get('media_url')
     }
 
-class handler(BaseHTTPRequestHandler):
-    """Vercel serverless function handler"""
+def handler(request):
+    """Vercel serverless function handler - Modern format"""
     
-    def do_POST(self):
-        """Handle POST requests"""
+    # Handle CORS preflight
+    if request.method == 'OPTIONS':
+        return {
+            'statusCode': 200,
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
+            }
+        }
+    
+    # Handle POST
+    if request.method == 'POST':
         try:
-            # Read request body
-            content_length = int(self.headers.get('Content-Length', 0))
-            body = self.rfile.read(content_length)
-            data = json.loads(body.decode('utf-8'))
-            
-            # Get message
-            message = data.get('message', '')
+            # Get message from request body
+            body = request.get_json()
+            message = body.get('message', '') if body else ''
             
             # Process chat
             response = process_chat(message)
             
             # Check for error
             if 'error' in response:
-                self.send_response(response.get('status', 400))
-                self.send_header('Content-Type', 'application/json')
-                self.send_header('Access-Control-Allow-Origin', '*')
-                self.end_headers()
-                self.wfile.write(json.dumps({'error': response['error']}).encode())
-                return
+                return {
+                    'statusCode': response.get('status', 400),
+                    'headers': {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    },
+                    'body': json.dumps({'error': response['error']})
+                }
             
-            # Send success response
-            self.send_response(200)
-            self.send_header('Content-Type', 'application/json')
-            self.send_header('Access-Control-Allow-Origin', '*')
-            self.end_headers()
-            self.wfile.write(json.dumps(response).encode())
+            # Return success
+            return {
+                'statusCode': 200,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                'body': json.dumps(response)
+            }
             
         except Exception as e:
             print(f"❌ Error: {str(e)}")
-            self.send_response(500)
-            self.send_header('Content-Type', 'application/json')
-            self.send_header('Access-Control-Allow-Origin', '*')
-            self.end_headers()
-            self.wfile.write(json.dumps({
-                'error': f'Internal server error: {str(e)}'
-            }).encode())
+            return {
+                'statusCode': 500,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                'body': json.dumps({'error': f'Internal server error: {str(e)}'})
+            }
     
-    def do_OPTIONS(self):
-        """Handle OPTIONS requests (CORS preflight)"""
-        self.send_response(200)
-        self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
-        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
-        self.end_headers()
+    # Method not allowed
+    return {
+        'statusCode': 405,
+        'headers': {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        'body': json.dumps({'error': 'Method not allowed'})
+    }
