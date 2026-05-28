@@ -273,10 +273,12 @@
         const userInput = document.getElementById('userInput');
         const sendButton = document.getElementById('sendButton');
         
-        // Auto-detect API endpoint (local vs Vercel)
+        // Auto-detect API endpoint (local vs deployed)
         const API_ENDPOINT = window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-            ? 'http://localhost:8000/chat'  // Local development (file:// or localhost)
-            : '/api/chat';                   // Vercel production
+            ? 'http://localhost:8000/chat'  // Local development
+            : window.location.hostname.includes('netlify.app')
+                ? '/.netlify/functions/chat'  // Netlify
+                : '/api/chat';                 // Vercel or other
 
         function addMessage(text, isUser, mediaUrl = null, confidence = null) {
             const messageDiv = document.createElement('div');
