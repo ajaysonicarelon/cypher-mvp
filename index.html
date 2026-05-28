@@ -274,11 +274,14 @@
         const sendButton = document.getElementById('sendButton');
         
         // Auto-detect API endpoint (local vs deployed)
-        const API_ENDPOINT = window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-            ? 'http://localhost:8000/chat'  // Local development
-            : window.location.hostname.includes('netlify.app')
-                ? '/.netlify/functions/chat'  // Netlify
+        const API_ENDPOINT = window.location.hostname.includes('netlify.app')
+            ? '/.netlify/functions/chat'  // Netlify
+            : (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+                ? 'http://localhost:8000/chat'  // Local development
                 : '/api/chat';                 // Vercel or other
+        
+        console.log('API_ENDPOINT:', API_ENDPOINT);
+        console.log('hostname:', window.location.hostname);
 
         function addMessage(text, isUser, mediaUrl = null, confidence = null) {
             const messageDiv = document.createElement('div');
