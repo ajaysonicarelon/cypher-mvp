@@ -273,11 +273,10 @@
         const userInput = document.getElementById('userInput');
         const sendButton = document.getElementById('sendButton');
         
-        // API endpoint - will be updated after Render deployment
-        // For now, use localhost for development
+        // API endpoint - Render backend
         const API_ENDPOINT = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
             ? 'http://localhost:8000/chat'  // Local development
-            : 'RENDER_BACKEND_URL_PLACEHOLDER/chat';  // Render backend (update after deployment)
+            : 'https://cypher-mvp.onrender.com/chat';  // Render backend
         
         console.log('🎯 API_ENDPOINT:', API_ENDPOINT);
         console.log('🌐 hostname:', window.location.hostname);
