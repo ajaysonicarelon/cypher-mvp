@@ -155,22 +155,6 @@ def health():
             'error': str(e)
         }), 500
 
-@app.route('/')
-def index():
-    """Serve the frontend"""
-    try:
-        # Try to serve from public directory
-        return send_from_directory('../public', 'index.html')
-    except:
-        # Fallback to API info
-        return jsonify({
-            'message': 'AI Chatbot API',
-            'endpoints': {
-                'chat': '/api/chat (POST)',
-                'health': '/api/health (GET)'
-            }
-        })
-
 # For Vercel
 if __name__ == '__main__':
     app.run()
