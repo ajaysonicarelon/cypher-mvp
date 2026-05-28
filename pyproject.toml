@@ -1,3 +1,7 @@
+[project]
+name = "ai-chatbot"
+version = "1.0.0"
+requires-python = ">=3.9"
+
 [tool.vercel]
-# Tell Vercel these are NOT FastAPI apps, they are serverless functions
 python-version = "3.9"
