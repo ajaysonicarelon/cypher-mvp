@@ -1,5 +1,6 @@
 """
 Flask API for AI Chatbot - Render Deployment
+Updated: 2026-06-01 - Added comprehensive onboarding data (101 Q&A pairs)
 """
 from flask import Flask, request, jsonify
 from flask_cors import CORS

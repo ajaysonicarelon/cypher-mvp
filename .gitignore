@@ -62,3 +62,10 @@ model_cache/
 *.temp
 temp/
 tmp/
+
+# Local documentation (not for Git)
+DEPLOYMENT_JOURNEY.md
+DEPLOYMENT.md
+SCALING_GUIDE.md
+IMPLEMENTATION_PLAN.md
+PRODUCT_PROPOSAL.md
