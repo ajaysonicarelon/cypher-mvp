@@ -1,0 +1,65 @@
+question,answer,category,status
+"What are the initial onboarding steps?","The initial onboarding steps are: 1) Attend initial onboarding training by HR, 2) Get in touch with your reporting manager, 3) Contact your assigned 'Buddy'.",onboarding,active
+"How do I get my system access credentials?","Check your personal email (the one you provided to the company) for an email containing: US Domain ID, Temporary password, and 4-digit IT desk pin. Keep the IT desk pin handy at all times. A copy is also sent to your manager.",onboarding,active
+"What if I can't find my credentials email?","A copy of the credentials email is also sent to your manager. Contact your manager if you can't find it in your personal email.",onboarding,active
+"What documents do I need for my temporary ID on the first day?","You need two documents for temporary ID access: 1) Aadhar card, 2) Vaccination certificate.",onboarding,active
+"Who do I contact to get my laptop?","Contact Kiran at Kiran.Vk@carelon.com. The Asset team is located on the 5th floor (Tech Bar) in Bagmane office, Bangalore. You need approval mail from HR & Manager before contacting them.",onboarding,active
+"Where is the Asset team located?","The Asset team is located on the 5th floor (Tech Bar) in Bagmane office, Bangalore.",onboarding,active
+"What is Kiran's email for laptop and assets?","Kiran's email is Kiran.Vk@carelon.com. Contact Kiran for assistance with laptop and asset collection.",onboarding,active
+"How do I apply for a permanent ID card?","First, check if HR has raised a request for your ID card. You'll need manager approval. If you need additional building access for a specific location, raise a request from the Insync portal.",onboarding,active
+"What do I need to prepare for team introduction?","Prepare a 1-slide PowerPoint presentation introducing yourself to the team.",onboarding,active
+"How do I request VPN access?","Raise an IT Service Connect request for VPN access. Your manager will need to approve it.",onboarding,active
+"What trainings do I need to complete?","You need to complete: 1) Mandatory training for new joiners, 2) Additional UX team trainings for Figma, 3) Healthcare System Structure document for high-level business understanding.",onboarding,active
+"What is TCP access and how do I get it?","TCP access requires a Product code (PRJ Code) assigned by your manager. Contact your manager to get this assigned.",onboarding,active
+"Where do I fill my timesheet?","Fill your timesheet in Service Now using the Timesheet link. This is used for billing and timesheet purposes.",onboarding,active
+"What is the timesheet link?","The timesheet is filled through Service Now. Use the Service Now Timesheet link for billing and timesheet entries.",onboarding,active
+"What is BCP and what is it used for?","BCP (Business Continuity Planning) is accessed through Insync BCP Link. It's used for access requests including Building access, Asset requests, and Relocation requests.",onboarding,active
+"What is Service Now used for?","Service Now is used for accessing all information related to your profile under the organization. Access it through the Service-now Link.",onboarding,active
+"What is Pulse Portal?","Pulse Portal (pulse.elevancehealth.com) is the Carelon associates portal for various personal tasks related to HR, IT, Business, and Seat reservations.",onboarding,active
+"What is Workday used for?","Workday is used for: 1) Adding bank details, 2) Time entry, 3) Applying for leave, 4) Setting goals.",onboarding,active
+"How do I view my salary?","Use the Payroll Portal to view 'My Pay' and apply for declarations.",onboarding,active
+"Where do I complete mandatory trainings?","Complete mandatory trainings through Workday Learning.",onboarding,active
+"What is Chrome River used for?","Chrome River is used for all types of claims including Internet reimbursement, Relocation reimbursement, and other expense claims.",onboarding,active
+"What is IT Service Connect?","IT Service Connect (Elevancehealth.service-now.com) is used for: 1) Raising software license requests, 2) Requesting ID cards, 3) Requesting design applications, 4) Raising building access requests.",onboarding,active
+"How do I request software licenses?","Raise a request through IT Service Connect at Elevancehealth.service-now.com.",onboarding,active
+"What is Pulse Point used for?","Pulse Point is used for apps related to Badge access and Reservation of seats. Use Pulse Point Spaces to reserve a seat for your respective office.",onboarding,active
+"How do I reserve a seat at the office?","Use Pulse Point Spaces to reserve a seat for your respective office.",onboarding,active
+"How do I set up company cab transport?","Raise a request by emailing the transport team for your office location. Then install the Move Insync application on your phone for booking and managing travel.",onboarding,active
+"What is the transport email for Hyderabad office?","For Hyderabad office, email DL-TransportHYD@carelon.com to set up transport.",onboarding,active
+"What is the transport email for Bangalore MTP office?","For Bangalore MTP office, email dl-TransportMTP@carelon.com to set up transport.",onboarding,active
+"What is the transport email for Bangalore Bagmane office?","For Bangalore Bagmane office, email dl-transportxenon@carelon.com to set up transport.",onboarding,active
+"What is the transport email for Gurugram office?","For Gurugram office, email dl-TransportGUR@carelon.com to set up transport.",onboarding,active
+"What app do I use for cab booking?","Install the Move Insync application on your phone for booking and managing your company cab travel.",onboarding,active
+"How do I order food at the office?","Install the Hunger Box application on your phone. Login with your Domain ID and set up your profile to order food at any office premise.",onboarding,active
+"What is Hunger Box?","Hunger Box is the food ordering application. Install it on your phone and login with your Domain ID to order food at any office premise.",onboarding,active
+"How do I reset my password?","Connect with IT Enterprise for password reset assistance.",onboarding,active
+"What is PingID?","PingID is an authentication app you need to install. Contact IT Enterprise for setup assistance.",onboarding,active
+"Who do I contact for design system questions?","Contact the Design System team or use the Carelon DS UX Team channel for communication.",onboarding,active
+"What design library should I use?","Currently, Lean IDS is the library every designer must follow.",onboarding,active
+"What is Lean IDS?","Lean IDS is the design system library that every designer at Carelon must follow for consistency.",onboarding,active
+"Who is my onboarding buddy?","Your onboarding buddy is assigned by your manager or HR. Check with them to get your buddy's contact information.",onboarding,active
+"What is my Domain ID?","Your Domain ID (US Domain ID) is sent to your personal email along with your temporary password and IT desk pin. Check the email from the company.",onboarding,active
+"Where can I find my IT desk pin?","Your 4-digit IT desk pin is sent to your personal email along with your Domain ID and temporary password. Keep it handy at all times.",onboarding,active
+"What is the first thing I should do on Day 1?","On Day 1, you should: 1) Get your temporary ID (bring Aadhar card and vaccination certificate), 2) Collect your laptop and assets from the Asset team, 3) Meet your buddy and manager.",onboarding,active
+"What should I do on Day 2-3?","On Day 2-3, you should: 1) Join team channels and introduce yourself, 2) Attend team standup, 3) Explore the Figma workspace.",onboarding,active
+"What should I do on Day 4-5?","On Day 4-5, you should: 1) Start your first training module, 2) Get project context from the team, 3) Attend your first design sync.",onboarding,active
+"How do I get building access?","Raise a building access request through IT Service Connect or the Insync portal (BCP) depending on your needs.",onboarding,active
+"What approvals do I need for laptop collection?","You need approval mail from both HR and your Manager to collect your laptop from the Asset team.",onboarding,active
+"Where is the Pulse Portal?","The Pulse Portal is at pulse.elevancehealth.com. It's the main portal for HR, IT, and business tasks.",onboarding,active
+"What is my PRJ Code?","Your PRJ Code (Product code) is assigned by your manager for TCP access. Contact your manager to get it.",onboarding,active
+"How do I apply for leave?","Apply for leave through Workday. Login to Workday and use the leave application feature.",onboarding,active
+"How do I add my bank details?","Add your bank details through Workday. This is required for salary payments.",onboarding,active
+"What is the IT Service Connect link?","The IT Service Connect link is Elevancehealth.service-now.com. Use it for all IT-related requests.",onboarding,active
+"Who approves my VPN request?","Your manager approves your VPN request after you raise it through IT Service Connect.",onboarding,active
+"What is the Carelon DS UX Team channel?","The Carelon DS UX Team channel is the communication channel for the Design System team. Use it for design system questions and support.",onboarding,active
+"How do I get Figma training?","Figma training is part of the additional UX team trainings. Your manager or buddy will guide you to the training resources.",onboarding,active
+"What is the Healthcare System Structure document?","The Healthcare System Structure document provides high-level understanding of the business. It's part of your UX team training materials.",onboarding,active
+"Do I need vaccination certificate?","Yes, you need a vaccination certificate for first-time temporary ID access on your first day at the office.",onboarding,active
+"What happens if I need relocation assistance?","For relocation assistance, raise a request through BCP (Insync portal) or claim reimbursement through Chrome River.",onboarding,active
+"How do I claim internet reimbursement?","Claim internet reimbursement through Chrome River. It handles all types of claims including internet expenses.",onboarding,active
+"What is Move Insync?","Move Insync is the application for booking and managing your company cab travel. Install it on your phone after setting up transport.",onboarding,active
+"Can I get assistance with asset collection?","Yes, contact Kiran at Kiran.Vk@carelon.com if you need assistance with laptop and asset collection.",onboarding,active
+"What is Insync portal?","Insync portal is used for BCP (Business Continuity Planning) requests including building access, asset requests, and relocation. Access it through the Insync BCP Link.",onboarding,active
+"How many slides should my intro presentation be?","Your team introduction presentation should be 1 slide only.",onboarding,active
+"What is the Asset team's floor number?","The Asset team is located on the 5th floor (Tech Bar) in Bagmane office, Bangalore.",onboarding,active
+"Which office is the Asset team in?","The Asset team is in the Bagmane office in Bangalore.",onboarding,active
