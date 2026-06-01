@@ -227,6 +227,44 @@
             background: #764ba2;
         }
 
+        /* Formatted text styling */
+        .message-bubble strong {
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .message-bubble em {
+            font-style: italic;
+            color: #34495e;
+        }
+
+        .message-bubble .list-item {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+
+        .message-bubble .list-item.numbered {
+            padding-left: 0;
+            font-weight: 500;
+        }
+
+        .message-bubble .list-item.bullet {
+            padding-left: 0;
+        }
+
+        .message-bubble .list-item.indented {
+            padding-left: 20px;
+            font-size: 0.95em;
+            color: #555;
+        }
+
+        /* Section spacing */
+        .message-bubble br + br {
+            display: block;
+            content: "";
+            margin-top: 8px;
+        }
+
         @media (max-width: 600px) {
             .chat-container {
                 height: 100vh;
@@ -281,13 +319,46 @@
         console.log('🎯 API_ENDPOINT:', API_ENDPOINT);
         console.log('🌐 hostname:', window.location.hostname);
 
+        function formatMarkdown(text) {
+            // Convert markdown to HTML
+            let html = text;
+            
+            // Bold (**text** or __text__)
+            html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
+            
+            // Italic (*text* or _text_)
+            html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+            html = html.replace(/_(.+?)_/g, '<em>$1</em>');
+            
+            // Convert newlines to <br> for proper line breaks
+            html = html.replace(/\n/g, '<br>');
+            
+            // Numbered lists (1. item)
+            html = html.replace(/^(\d+)\.\s+(.+)$/gm, '<div class="list-item numbered">$1. $2</div>');
+            
+            // Bullet lists (- item)
+            html = html.replace(/^-\s+(.+)$/gm, '<div class="list-item bullet">• $1</div>');
+            
+            // Indented items (   - item)
+            html = html.replace(/^\s{2,}-\s+(.+)$/gm, '<div class="list-item bullet indented">• $1</div>');
+            
+            return html;
+        }
+
         function addMessage(text, isUser, mediaUrl = null, confidence = null) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
             
             const bubbleDiv = document.createElement('div');
             bubbleDiv.className = 'message-bubble';
-            bubbleDiv.textContent = text;
+            
+            // Format bot messages with markdown, keep user messages as plain text
+            if (isUser) {
+                bubbleDiv.textContent = text;
+            } else {
+                bubbleDiv.innerHTML = formatMarkdown(text);
+            }
             
             if (mediaUrl) {
                 const img = document.createElement('img');
