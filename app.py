@@ -49,8 +49,26 @@ def initialize_system():
     supabase = get_supabase()
     print("📊 Fetching knowledge base from Supabase...")
     result = supabase.table('knowledge_base').select('question, answer, media_url').eq('status', 'active').execute()
-    _knowledge_base_cache = result.data
-    print(f"✅ Loaded {len(_knowledge_base_cache)} knowledge base entries")
+    
+    # Expand questions with pipe separator (multiple questions → one answer)
+    expanded_cache = []
+    for item in result.data:
+        question = item["question"]
+        # Check if question contains pipe separator
+        if '|' in question:
+            # Split by pipe and create separate entries for each question
+            questions = [q.strip() for q in question.split('|')]
+            for q in questions:
+                expanded_cache.append({
+                    'question': q,
+                    'answer': item['answer'],
+                    'media_url': item.get('media_url')
+                })
+        else:
+            expanded_cache.append(item)
+    
+    _knowledge_base_cache = expanded_cache
+    print(f"✅ Loaded {len(result.data)} knowledge base entries (expanded to {len(_knowledge_base_cache)} questions)")
     
     print("🤖 Creating TF-IDF vectorizer...")
     _vectorizer = TfidfVectorizer(lowercase=True, stop_words='english', ngram_range=(1, 2), max_features=1000)
