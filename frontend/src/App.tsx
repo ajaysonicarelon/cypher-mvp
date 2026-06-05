@@ -24,7 +24,8 @@ import { carelonTheme } from '@ajaysoni7832/lean-ids-tokens';
 
 // Import custom icons
 import { HomeIcon, DatabaseIcon, ChatIcon } from './components/CustomIcons';
-import { Logo } from './components/Logo';
+import InSyncHome from './pages/InSyncHome';
+import AdminDashboard from './pages/admin/AdminDashboard';
 
 interface Message {
   text: string;
@@ -49,6 +50,7 @@ function App() {
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
+  const [currentPage, setCurrentPage] = useState<'chat' | 'insync' | 'admin'>('chat');
   const [sessionId] = useState(() => `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -158,21 +160,10 @@ function App() {
 
   return (
     <ThemeProvider theme={carelonTheme}>
-      <div className="custom-logo-container">
-        <Logo />
-      </div>
       <PageLayout
-        variant="topbar-sidebar"
-        pageTitle={showWelcome ? "" : "Cypher Chat"}
-        breadcrumbs={showWelcome ? [] : [
-          { label: 'Chat', href: '#' },
-          { label: 'Page Name', href: '#' },
-          { label: 'Current Page', href: '#', isActive: true }
-        ]}
-        topHeader={{
-          appName: "Cypher",
-          showLogo: true
-        }}
+        variant="sidebar-only"
+        pageTitle=""
+        breadcrumbs={[]}
         sideNav={{
           groups: [
             {
@@ -184,10 +175,23 @@ function App() {
               ]
             },
             {
-              title: 'SETTINGS',
+              title: 'PRODUCTS',
               items: [
-                { id: 'settings', label: 'Settings', icon: <SettingsIcon size="medium" />, onClick: () => {} },
-                { id: 'add-product', label: 'Add Product', icon: <AddIcon size="medium" />, onClick: () => {} }
+                { 
+                  id: 'insync', 
+                  label: 'InSync BCP', 
+                  icon: <SettingsIcon size="medium" color="white" />, 
+                  active: currentPage === 'insync',
+                  onClick: () => setCurrentPage('insync')
+                },
+                { 
+                  id: 'admin', 
+                  label: 'Admin Dashboard', 
+                  icon: <SettingsIcon size="medium" color="white" />, 
+                  active: currentPage === 'admin',
+                  onClick: () => setCurrentPage('admin')
+                },
+                { id: 'add-product', label: 'Add Product', icon: <AddIcon size="medium" color="white" />, onClick: () => {} }
               ]
             }
           ],
@@ -198,7 +202,11 @@ function App() {
           }
         }}
       >
-        {showWelcome ? (
+        {currentPage === 'admin' ? (
+          <AdminDashboard />
+        ) : currentPage === 'insync' ? (
+          <InSyncHome />
+        ) : showWelcome ? (
           <div className="empty-state-container">
             <div className="empty-state-content">
               <h1 className="empty-state-title">Welcome to Cypher!</h1>

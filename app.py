@@ -16,6 +16,50 @@ from bs4 import BeautifulSoup
 app = Flask(__name__)
 CORS(app)
 
+# Sample InSync HyWo Data for Testing
+SAMPLE_INSYNC_DATA = [
+    {
+        "question": "What is HyWo?",
+        "answer": "HyWo stands for Hybrid Work. It's Carelon's attendance tracking system where employees log their daily work location (office, home, or other). You need to mark your HyWo attendance every working day in InSync.",
+        "category": "insync"
+    },
+    {
+        "question": "How do I track my HyWo attendance?",
+        "answer": "To track HyWo attendance: 1) Log in to InSync portal, 2) Navigate to HyWo section, 3) Select your work location for the day (Office/Home/Other), 4) Submit your attendance. Do this daily for accurate tracking.",
+        "category": "insync"
+    },
+    {
+        "question": "What is a HyWo Exception?",
+        "answer": "A HyWo Exception is a request to correct or update your attendance for dates where you couldn't mark HyWo on time, or need to make changes due to special circumstances like sick leave, emergency, or system issues.",
+        "category": "insync"
+    },
+    {
+        "question": "How do I submit a HyWo Exception?",
+        "answer": "To submit HyWo Exception: 1) Go to InSync portal, 2) Navigate to HyWo Exception section, 3) Select the date(s) needing correction, 4) Provide reason for exception, 5) Attach supporting documents if required, 6) Submit for approval.",
+        "category": "insync"
+    },
+    {
+        "question": "What is a relocation request?",
+        "answer": "A relocation request is a formal request to change your primary work location or office. This could be moving to a different city, office building, or requesting permanent work-from-home arrangement.",
+        "category": "insync"
+    },
+    {
+        "question": "How do I submit a relocation request?",
+        "answer": "To submit relocation request: 1) Log in to InSync, 2) Go to Relocation Request section, 3) Fill in current and desired location details, 4) Provide reason for relocation, 5) Attach supporting documents, 6) Submit for approval.",
+        "category": "insync"
+    },
+    {
+        "question": "What is a SEZ card?",
+        "answer": "SEZ (Special Economic Zone) card is your official identification for accessing SEZ-designated office premises. It contains your employee details, photo, and access permissions for secure entry to Carelon offices in SEZ areas.",
+        "category": "insync"
+    },
+    {
+        "question": "How do I view my SEZ card?",
+        "answer": "To view SEZ card: 1) Log in to InSync portal, 2) Navigate to SEZ Card section, 3) Your digital SEZ card will be displayed with your photo and details, 4) You can download or print it if needed.",
+        "category": "insync"
+    },
+]
+
 # Global cache
 _supabase = None
 _vectorizer = None
@@ -27,6 +71,28 @@ _initialized = False
 _conversation_sessions = {}
 
 CONFIDENCE_THRESHOLD = float(os.environ.get('CONFIDENCE_THRESHOLD', '0.35'))
+
+# API Key Management (for multi-tenant support)
+# In production, this would be in a database
+VALID_API_KEYS = {
+    'demo-key': {
+        'widget_id': 'demo-widget',
+        'product_name': 'Demo Product',
+        'active': True
+    }
+}
+
+def validate_api_key(api_key):
+    """Validate API key and return widget configuration"""
+    if not api_key:
+        return None
+    
+    # For demo, use hardcoded keys. In production, query database
+    key_config = VALID_API_KEYS.get(api_key)
+    if key_config and key_config['active']:
+        return key_config
+    
+    return None
 
 def get_supabase():
     """Get or create Supabase client"""
@@ -52,13 +118,23 @@ def initialize_system():
         return
     
     print("🔌 Initializing system...")
-    supabase = get_supabase()
-    print("📊 Fetching knowledge base from Supabase...")
-    result = supabase.table('knowledge_base').select('question, answer, media_url, tags').eq('status', 'active').execute()
+    
+    # Try to load from Supabase, fallback to sample data
+    try:
+        supabase = get_supabase()
+        print("📊 Fetching knowledge base from Supabase...")
+        result = supabase.table('knowledge_base').select('question, answer, media_url, tags').eq('status', 'active').execute()
+        data_source = result.data
+        print(f"✅ Loaded {len(data_source)} entries from Supabase")
+    except Exception as e:
+        print(f"⚠️ Could not load from Supabase: {e}")
+        print("📦 Using sample InSync data instead...")
+        data_source = SAMPLE_INSYNC_DATA
+        print(f"✅ Loaded {len(data_source)} sample entries")
     
     # Expand questions with pipe separator (multiple questions → one answer)
     expanded_cache = []
-    for item in result.data:
+    for item in data_source:
         question = item["question"]
         tags = item.get("tags") or []
         
@@ -420,7 +496,7 @@ def combine_answers(matches, query):
 
 @app.route('/chat', methods=['POST', 'OPTIONS'])
 def chat():
-    """Chat endpoint with multi-topic support"""
+    """Chat endpoint with multi-topic support and API key validation"""
     print("🚀 Chat endpoint called")
     print(f"📥 HTTP Method: {request.method}")
     
@@ -430,13 +506,28 @@ def chat():
         return '', 200
     
     try:
+        # Validate API key
+        api_key = request.headers.get('X-API-Key')
+        widget_id = request.headers.get('X-Widget-ID')
+        
+        print(f"🔑 API Key: {api_key[:10] if api_key else 'None'}...")
+        print(f"🆔 Widget ID: {widget_id}")
+        
+        # For demo, allow requests without API key (remove in production)
+        if api_key:
+            key_config = validate_api_key(api_key)
+            if not key_config:
+                print("❌ Invalid API key")
+                return jsonify({'error': 'Invalid API key'}), 401
+            print(f"✅ API key validated for: {key_config['product_name']}")
+        
         print("🔄 Initializing system...")
         initialize_system()
         print("✅ System initialized")
         
         data = request.get_json()
         message = data.get('message', '').strip()
-        session_id = data.get('session_id', 'default')  # Get session ID from request
+        session_id = data.get('session_id', 'default')
         print(f"📝 Message received: {message}")
         print(f"🔑 Session ID: {session_id}")
         

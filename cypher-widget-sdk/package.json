@@ -1,0 +1,28 @@
+{
+  "name": "cypher-widget",
+  "version": "1.0.0",
+  "description": "Pluggable, configurable chatbot widget for any web application",
+  "main": "dist/cypher-widget.umd.js",
+  "module": "dist/cypher-widget.es.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "terser": "^5.48.0",
+    "vite": "^5.0.0"
+  },
+  "keywords": [
+    "chatbot",
+    "widget",
+    "ai",
+    "support",
+    "helpdesk"
+  ],
+  "author": "Cypher",
+  "license": "MIT"
+}
