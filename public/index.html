@@ -238,31 +238,69 @@
             color: #34495e;
         }
 
-        .message-bubble .list-item {
-            margin: 8px 0;
+        .message-bubble .text-line {
+            margin: 4px 0;
             line-height: 1.6;
+        }
+
+        .message-bubble .line-break {
+            height: 12px;
+        }
+
+        .message-bubble .list-item {
+            margin: 6px 0;
+            line-height: 1.6;
+            padding: 2px 0;
         }
 
         .message-bubble .list-item.numbered {
             padding-left: 0;
             font-weight: 500;
+            color: #2c3e50;
         }
 
         .message-bubble .list-item.bullet {
             padding-left: 0;
+            color: #34495e;
         }
 
         .message-bubble .list-item.indented {
-            padding-left: 20px;
+            padding-left: 24px;
             font-size: 0.95em;
             color: #555;
         }
 
-        /* Section spacing */
-        .message-bubble br + br {
-            display: block;
-            content: "";
-            margin-top: 8px;
+        /* Suggestion chips */
+        .suggestions-container {
+            padding: 15px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .suggestion-chip {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #667eea;
+            border-radius: 20px;
+            color: #667eea;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .suggestion-chip:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .suggestions-container.hidden {
+            display: none;
         }
 
         @media (max-width: 600px) {
@@ -285,14 +323,22 @@
 <body>
     <div class="chat-container">
         <div class="chat-header">
-            🤖 Local AI Chatbot
+            🎓 UX Designer Onboarding Assistant
         </div>
         <div class="chat-messages" id="chatMessages">
             <div class="message bot">
                 <div class="message-bubble">
-                    👋 Hello! I'm your local AI assistant powered by semantic search. Ask me anything about machine learning, AI, or data science!
+                    👋 Hello! I'm your UX Designer Onboarding Assistant. I can help you with everything you need to know about joining the team!
                 </div>
             </div>
+        </div>
+        <div class="suggestions-container" id="suggestionsContainer">
+            <div class="suggestion-chip" data-question="Show me the complete onboarding checklist">📋 Complete Onboarding Checklist</div>
+            <div class="suggestion-chip" data-question="Who is Kiran?">👤 Who is Kiran?</div>
+            <div class="suggestion-chip" data-question="What should I do on Day 1?">📅 Day 1 Tasks</div>
+            <div class="suggestion-chip" data-question="Tell me about food and transport">🚗 Food & Transport</div>
+            <div class="suggestion-chip" data-question="How do I get my laptop?">💻 Laptop Setup</div>
+            <div class="suggestion-chip" data-question="Tell me about Workday and leave">📊 Workday & Leave</div>
         </div>
         <div class="chat-input-container">
             <input 
@@ -323,25 +369,46 @@
             // Convert markdown to HTML
             let html = text;
             
+            // Process line by line to handle formatting correctly
+            const lines = html.split('\n');
+            const formatted = lines.map(line => {
+                // Skip empty lines
+                if (line.trim() === '') {
+                    return '<div class="line-break"></div>';
+                }
+                
+                // Numbered lists (1. item, 2. item, etc.)
+                if (/^\d+\.\s+/.test(line)) {
+                    line = line.replace(/^(\d+)\.\s+(.+)$/, '<div class="list-item numbered">$1. $2</div>');
+                    return line;
+                }
+                
+                // Indented bullet lists (   - item)
+                if (/^\s{2,}-\s+/.test(line)) {
+                    line = line.replace(/^\s{2,}-\s+(.+)$/, '<div class="list-item bullet indented">• $1</div>');
+                    return line;
+                }
+                
+                // Regular bullet lists (- item)
+                if (/^-\s+/.test(line)) {
+                    line = line.replace(/^-\s+(.+)$/, '<div class="list-item bullet">• $1</div>');
+                    return line;
+                }
+                
+                // Regular text line
+                return '<div class="text-line">' + line + '</div>';
+            }).join('');
+            
+            // Now apply bold and italic formatting
+            html = formatted;
+            
             // Bold (**text** or __text__)
             html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
             html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
             
-            // Italic (*text* or _text_)
-            html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
-            html = html.replace(/_(.+?)_/g, '<em>$1</em>');
-            
-            // Convert newlines to <br> for proper line breaks
-            html = html.replace(/\n/g, '<br>');
-            
-            // Numbered lists (1. item)
-            html = html.replace(/^(\d+)\.\s+(.+)$/gm, '<div class="list-item numbered">$1. $2</div>');
-            
-            // Bullet lists (- item)
-            html = html.replace(/^-\s+(.+)$/gm, '<div class="list-item bullet">• $1</div>');
-            
-            // Indented items (   - item)
-            html = html.replace(/^\s{2,}-\s+(.+)$/gm, '<div class="list-item bullet indented">• $1</div>');
+            // Italic (*text* or _text_) - but not ** which is bold
+            html = html.replace(/(?<!\*)\*([^*]+?)\*(?!\*)/g, '<em>$1</em>');
+            html = html.replace(/(?<!_)_([^_]+?)_(?!_)/g, '<em>$1</em>');
             
             return html;
         }
@@ -421,8 +488,8 @@
             }, 5000);
         }
 
-        async function sendMessage() {
-            const message = userInput.value.trim();
+        async function sendMessage(messageText = null) {
+            const message = messageText || userInput.value.trim();
             
             if (!message) {
                 console.log('❌ Empty message, not sending');
@@ -431,6 +498,12 @@
             
             console.log('📤 Sending message:', message);
             console.log('🎯 API Endpoint:', API_ENDPOINT);
+            
+            // Hide suggestions after first message
+            const suggestionsContainer = document.getElementById('suggestionsContainer');
+            if (suggestionsContainer && !suggestionsContainer.classList.contains('hidden')) {
+                suggestionsContainer.classList.add('hidden');
+            }
             
             addMessage(message, true);
             userInput.value = '';
@@ -480,13 +553,21 @@
             }
         }
 
-        sendButton.addEventListener('click', sendMessage);
+        sendButton.addEventListener('click', () => sendMessage());
         
         userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 sendMessage();
             }
+        });
+
+        // Add click handlers for suggestion chips
+        document.querySelectorAll('.suggestion-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                const question = chip.getAttribute('data-question');
+                sendMessage(question);
+            });
         });
 
         userInput.focus();

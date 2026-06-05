@@ -27,13 +27,26 @@ html, body {
   margin-top: 0 !important;
 }
 
-/* Custom logo container - positioned absolutely over sidebar */
-.custom-logo-container {
-  position: fixed;
-  top: 16px;
-  left: 16px;
-  z-index: 1000;
-  pointer-events: none;
+/* Hide sidebar logo completely - including container */
+[class*="SideNav"] [class*="logo"],
+[class*="SideNav"] [class*="Logo"],
+[class*="SideNav"] [class*="logo"] img,
+[class*="SideNav"] [class*="logo"] svg,
+[class*="SideNav"] [class*="Logo"] img,
+[class*="SideNav"] [class*="Logo"] svg,
+[class*="SideNav"] > div:first-child,
+[class*="SideNav"] header,
+[class*="SideNav"] [class*="header"],
+[class*="SideNav"] [class*="Header"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
 }
 
 /* Empty State - Initial Screen */
