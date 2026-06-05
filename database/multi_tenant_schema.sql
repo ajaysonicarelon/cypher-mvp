@@ -82,20 +82,21 @@ ON CONFLICT DO NOTHING;
 DO $$
 DECLARE
     product_id UUID;
+    widget_uuid UUID;
 BEGIN
     SELECT id INTO product_id FROM products WHERE name = 'InSync' LIMIT 1;
-    
+
     IF product_id IS NOT NULL THEN
         -- Insert demo widget
         INSERT INTO widgets (product_id, widget_id, name, config, active) VALUES
-        (product_id, 'insync-widget', 'InSync Chatbot', 
+        (product_id, 'insync-widget', 'InSync Chatbot',
          '{"theme": {"primaryColor": "#5009B5", "accentColor": "#00D9FF"}}', true)
         ON CONFLICT (widget_id) DO NOTHING;
-        
+
         -- Insert demo API key
-        INSERT INTO api_keys (widget_id, api_key, name, rate_limit, active) 
-        SELECT id, 'demo-key', 'Demo API Key', 1000, true 
-        FROM widgets WHERE widget_id = 'insync-widget'
+        SELECT id INTO widget_uuid FROM widgets WHERE widget_id = 'insync-widget' LIMIT 1;
+        INSERT INTO api_keys (widget_id, api_key, name, rate_limit, active)
+        VALUES (widget_uuid, 'demo-key', 'Demo API Key', 1000, true)
         ON CONFLICT (api_key) DO NOTHING;
     END IF;
 END $$;
@@ -103,18 +104,18 @@ END $$;
 -- Insert demo knowledge base
 DO $$
 DECLARE
-    widget_id UUID;
+    widget_uuid UUID;
 BEGIN
-    SELECT id INTO widget_id FROM widgets WHERE widget_id = 'insync-widget' LIMIT 1;
-    
-    IF widget_id IS NOT NULL THEN
+    SELECT id INTO widget_uuid FROM widgets WHERE widget_id = 'insync-widget' LIMIT 1;
+
+    IF widget_uuid IS NOT NULL THEN
         INSERT INTO knowledge_base (widget_id, question, answer, category, status) VALUES
-        (widget_id, 'What is HyWo?', 'HyWo stands for Hybrid Work. It is Carelon''s attendance tracking system where employees log their daily work location.', 'insync', 'active'),
-        (widget_id, 'How do I track my HyWo attendance?', 'To track HyWo attendance: 1) Log in to InSync portal, 2) Navigate to HyWo section, 3) Select your work location, 4) Submit your attendance.', 'insync', 'active'),
-        (widget_id, 'What is a HyWo Exception?', 'A HyWo Exception is a request to correct or update your attendance for dates where you couldn''t mark HyWo on time.', 'insync', 'active'),
-        (widget_id, 'How do I submit a HyWo Exception?', 'Go to InSync portal, navigate to HyWo Exception section, select the date, provide reason, and submit for approval.', 'insync', 'active'),
-        (widget_id, 'What is a relocation request?', 'A relocation request is a formal request to change your primary work location or office.', 'insync', 'active'),
-        (widget_id, 'What is a SEZ card?', 'SEZ card is your official identification for accessing SEZ-designated office premises.', 'insync', 'active')
+        (widget_uuid, 'What is HyWo?', 'HyWo stands for Hybrid Work. It is Carelon''s attendance tracking system where employees log their daily work location.', 'insync', 'active'),
+        (widget_uuid, 'How do I track my HyWo attendance?', 'To track HyWo attendance: 1) Log in to InSync portal, 2) Navigate to HyWo section, 3) Select your work location, 4) Submit your attendance.', 'insync', 'active'),
+        (widget_uuid, 'What is a HyWo Exception?', 'A HyWo Exception is a request to correct or update your attendance for dates where you couldn''t mark HyWo on time.', 'insync', 'active'),
+        (widget_uuid, 'How do I submit a HyWo Exception?', 'Go to InSync portal, navigate to HyWo Exception section, select the date, provide reason, and submit for approval.', 'insync', 'active'),
+        (widget_uuid, 'What is a relocation request?', 'A relocation request is a formal request to change your primary work location or office.', 'insync', 'active'),
+        (widget_uuid, 'What is a SEZ card?', 'SEZ card is your official identification for accessing SEZ-designated office premises.', 'insync', 'active')
         ON CONFLICT DO NOTHING;
     END IF;
 END $$;
